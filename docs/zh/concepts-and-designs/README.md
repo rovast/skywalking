@@ -12,7 +12,7 @@
   - [探针介绍](probe-introduction.md)。介绍什么是探针、探针的类型以及我们为什么需要探针。
   - [Service auto instrument agent](service-agent.md)。介绍 Agent 作用，以及 SkyWalking 已经支持的。
   - [Manual instrument SDK](manual-sdk.md)。介绍 SkyWalking 生态的 Manual instrument SDK。
-  - [Service Mesh probe](service-mesh-probe.md)。介绍 
+  - [Service Mesh probe](service-mesh-probe.md)。
 - 后端
   - [概览](backend-overview.md)。OAP 后端简介。
   - [Observability Analysis Language](oal.md)。介绍核心语言：聚合数据的 OAL。
