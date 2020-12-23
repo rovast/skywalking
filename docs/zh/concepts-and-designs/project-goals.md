@@ -1,41 +1,35 @@
-# Design Goals
-The document outlines the core design goals for SkyWalking project.
+# 设计目标
 
-- **Keep Observability**. No matter how does the target system deploy, SkyWalking could provide a solution or 
-integration way to keep observability for it. Based on this, SkyWalking provides several runtime forms and probes.
+此文档阐述了 SkyWalking 项目的核心设计目标。
 
-- **Topology, Metrics and Trace Together**. The first step to see and understand a distributed system should be 
-from topology map. It visualizes the whole complex system as an easy map. Under that topology, OSS people requires
-more about metrics for service, instance, endpoint and calls. Trace exists as detail logs for making sense of those metrics.
-Such as when endpoint latency becomes long, you want to see the slowest the trace to find out why. So you can see,
-they are from big picture to details, they are all needed. SkyWalking integrates and provides a lot of features to
-make this possible and easy understand.
+- **保持可观测性**。不论你的系统是以何种方式部署的，SkyWalking 都提供了相关的集成方案来保持可观测性。
+也正是如此，SkyWalking 提供了多种的运行时形式和探针。
+- **一体化的拓扑、指标和链路追踪**。去了解一个分布式系统，首先从他的拓扑图入手。他把整个复杂的系统形象化的表达出来。
+在这样的拓扑之下，运行支撑人员可以获得更多关于服务指标、实例、端点和调用的各种信息。
+链路信息以日志详情的形式呈现，来使这些指标更有意义。比如放一个端点的延迟变得很长的时候，你想知道哪个链路最慢，并分析原因。
+所以你看，这是一个宏观到具体的过程，都是有意义的。SkyWalking 做了很多集成工作，提供了很多特性来实现这样的功能。
 
-- **Light Weight**. There two parts of light weight are needed. (1) In probe, we just depend on network
-communication framework, prefer gRPC. By that, the probe should be as small as possible, to avoid the library
-conflicts and the payload of VM, such as permsize requirement in JVM.
-(2) As an observability platform, it is secondary and third level system in your project environment.
-So we are using our own light weight framework to build the backend core. Then you don't need to 
-deploy big data tech platform and maintain them. SkyWalking should be simple in tech stack.
+- **轻量级**。为了保持轻量，我们需要在两个方向努力：(1) 在探针方面，我们仅依赖于网络通信框架，gRPC 更好。
+基于此，探针是约轻量越好，可以避免库的冲突和 VM 的开销，如：JVM 的固定开销。
+(2) 作为一个可观测平台，应该作为你项目的弱依赖（或者叫次要系统）。所以我们使用了一个轻量级的框架来构建后端核心服务。
+这样你也不用引入大数据技术栈并花费精力去维护。SkyWalking 在技术栈上，会保持足够简单。
 
-- **Pluggable**. SkyWalking core team provides many default implementations, but definitely it is not enough,
-and also don't fit every scenario. So, we provide a lot of features for being pluggable. 
+- **可插拔**。SkyWalking 的核心团队提供了很多默认的实现，但千人前面，也并不是能满足所有需求。所以我们提供了很多可插拔的特性。
 
-- **Portability**.  SkyWalking can run in multiple environments, including: 
-(1) Use traditional register center like eureka.
-(2) Use RPC framework including service discovery, like Spring Cloud, Apache Dubbo.
-(3) Use Service Mesh in modern infrastructure.
-(4) Use cloud services.
-(5) Across cloud deployment. 
-SkyWalking should run well in all these cases.
+- **可移植性**。SkyWalking 可移运行在多种环境中，包括：
+(1) 传统的注册中心，如：eureka。
+(2) 基于 RPC 的服务发现框架，如：Spring Cloud, Apache Dubbo。
+(3) Service Mesh 架构。
+(4) 云服务环境。
+(5) 混合云环境。
+SkyWalking 可移在上述所有场景里正常运行。
 
-- **Interop**. Observability is a big landscape, SkyWalking is impossible to support all, even by its community.
-As that, it supports to interop with other OSS system, mostly probes, such as Zipkin, Jaeger, OpenTracing, OpenCensus.
-To accept and understand their data formats makes sure SkyWalking more useful for end users. And don't require
-the users to switch their libraries.
+- **互通性**。可观察性是一个很大的范畴，想要 SkyWalking 来满足所有的场景还是不现实的（哪怕是基于他的社区）。
+所以我们为其他的运营支撑系统提供了互通性，大多数的探针，比如：Zipkin, Jaeger, OpenTracing, OpenCensus。
+通过兼容这些探针的数据格式，使 SkyWalking 对使用者更加友好，也不需要用户切换他们的类库。
 
 
-## What is next?
-- See [probe Introduction](probe-introduction.md) to know SkyWalking's probe groups.
-- From [backend overview](backend-overview.md), you can understand what backend does after it received probe data.
-- If you want to customize UI, start with [UI overview](ui-overview.md) document. 
+## 接下来
+- 查看 [探针介绍](probe-introduction.md) 来了解 SkyWalking 的探针分类。
+- 通过了解 [后端概述](backend-overview.md)，你可以知道后端在接收了探针数据之后所做的工作。
+- 如果你想自定义 UI，可以通过查看 [UI 概览](ui-overview.md) 来开始。 

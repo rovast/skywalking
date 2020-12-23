@@ -28,16 +28,11 @@ SkyWalking 在逻辑上分为四大部分：探针、平台后端、存储和 UI
 
 <img src="http://skywalking.apache.org/assets/frame-v8.jpg?u=20200423"/>
 
-- **Probe**s collect data and reformat them for SkyWalking requirements (different probes support different sources).
-- **Platform backend**, supports data aggregation, analysis and drives process flow from probes to the UI. The analysis includes
-  SkyWalking natives traces and metrics, 3rd party, including Istio and Envoy telemetry, Zipkin trace format, etc. You even can 
-  customize aggregation and analysis by using [Observability Analysis Language for native metrics](oal.md) and [Meter System for extension metrics](meter.md).
-- **Storage** houses SkyWalking data through an open/plugable interface. You can choose an existing implementation, such as
-  ElasticSearch, H2 or a MySQL cluster managed by Sharding-Sphere, or implement your own. Patches for new storage implementors 
-  welcome!
-- **UI** a highly customizable web based interface allowing SkyWalking end users to visualize and manage SkyWalking data.
+- **探针** 根据 SkyWalking 的需求来采集和格式化数据（不同的探针支持不同的数据源）。
+- **平台后端** 支持数据的聚合和分析，作为 UI 和探针的中间层。分析工作包括 SkyWalking 本身的追踪和指标；以及第三方组件，如 Istio 和 Envoy 的遥测数据，Zipkin 的追踪格式化等。你甚至可以自定义聚合和分析数据，参考：[Observability Analysis Language for native metrics](oal.md) 和 [Meter System for extension metrics](meter.md)。
+- **存储** 通过 开放/可插拔 的接口来支撑 SkyWalking 数据。你也可以使用其他现有的存储方案，比如：ElasticSearch, H2 或者 Sharding-Sphere 提供的 MySQL 集群。你也可以自己实现，当然我们也欢迎你实现新的存储。
+- **UI** 一个高度自定义的 web 平台，可以用来管理 SkyWalking 数据和可视化。
 
-
-## What is next?
-- Learn SkyWalking's [Project Goals](project-goals.md)
-- FAQ, [Why doesn't SkyWalking involve MQ in the architecture?](../FAQ/why_mq_not_involved.md)
+## 接下来
+- SkyWalking [项目目标](project-goals.md)
+- FAQ, [为什么不在 SkyWalking 架构中引入 MQ](../FAQ/why_mq_not_involved.md)
