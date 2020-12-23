@@ -1,4 +1,4 @@
-# 可观测性分析平台（OAP）
+# 数据分析平台（OAP）
 OAP(Observability Analysis Platform) 是一个新概念，自 SkyWalking 6.x 提出。
 OAP 替换了以前的 SkyWalking 后端。 OAP 提供的能力如下：
 ## OAP 能力
