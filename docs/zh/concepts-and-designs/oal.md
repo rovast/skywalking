@@ -77,7 +77,7 @@ disable(METRICS_NAME);
 > all_heatmap = from(All.latency).histogram(100, 20);
 
 在这个例子里，就是所有请求的热力图。
-参数 (1) 是延迟计算的精度，比如上面的例子， 113ms 和 193ms 被当成 101-200ms group。
+参数 (1) 是延迟计算的精度，比如上面的例子， 113ms 和 193ms 都属于 101 至 200ms group。
 参数 (2) 是 group 的数量。在上面的例子里，21(param value + 1) groups 就是 0-100ms, 101-200ms, ... 1901-2000ms, 2000+ms 
 
 - `apdex`。阅读 [Apdex 的维基百科](https://en.wikipedia.org/wiki/Apdex)
@@ -99,7 +99,7 @@ disable(METRICS_NAME);
 
 > all_p99 = from(All.latency).p99(10);
 
-在这种情况下，计算请求的 p99 值。这个参数是 p99 计算的精度，和上面一样，120ms 和 124 是当成一样的。
+在这种情况下，计算请求的 p99 值。这个参数是 p99 计算的精度，和上面一样，120ms 和 124ms 属于同一个 group，即：120ms - 130ms
 
 ## Metrics name
 
@@ -141,16 +141,16 @@ endpoint_abnormal = from(Endpoint.*).filter(responseCode in [404, 500, 503]).sum
 // 计算服务的请求类型是 RequestType.PRC 或 RequestType.gRPC 的总和
 endpoint_rpc_calls_sum = from(Endpoint.*).filter(type in [RequestType.PRC, RequestType.gRPC]).sum()
 
-// Calculate the sum of endpoint name in ["/v1", "/v2"], for each service.
+// 计算服务端点名称是 "/v1", "/v2" 数量综合
 endpoint_url_sum = from(Endpoint.*).filter(endpointName in ["/v1", "/v2"]).sum()
 
-// Calculate the sum of calls for each service.
+// 计算服务的所有请求数量
 endpoint_calls = from(Endpoint.*).sum()
 
-// Calculate the CPM with the GET method for each service.The value is made up with `tagKey:tagValue`.
+// 计算每个服务的 GET 请求 CPM 数据，value 的数据格式 `tagKey:tagValue`
 service_cpm_http_get = from(Service.*).filter(tags contain "http.method:GET").cpm()
 
-// Calculate the CPM with the HTTP method except for the GET method for each service.The value is made up with `tagKey:tagValue`.
+// 计算每个服务的非 GET 请求 CPM 数据，value 的数据格式 `tagKey:tagValue`.
 service_cpm_http_other = from(Service.*).filter(tags not contain "http.method:GET").cpm()
 
 disable(segment);

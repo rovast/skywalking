@@ -1,24 +1,21 @@
-# Meter System
-Meter system is another streaming calculation mode, especially for metrics data. In the [OAL](oal.md), there are clear 
-[Scope Definitions](scope-definitions.md), including native objects. Meter system is focusing on the data type itself,
-and provides more flexible to the end user to define the scope entity.
+# 度量系统(Meter System)
 
-The meter system is open to different receivers and fetchers in the backend, 
-follow the [backend setup document](../setup/backend/backend-setup.md) for more details.
+度量系统是另一种流计算模型，针对 metrics 数据设计。
+在 [OAL](oal.md)中，有明确的 [Scope 定义](scope-definitions.md)，还有自带的一些 objects。
+度量系统聚焦数据类型，并且提供了更遍历的方式，让使用者来定义 scope 实体。
 
-Every metrics is declared in the meter system should include following attribute
-1. **Metrics Name**. An unique name globally, should avoid overlap the OAL variable names.
-1. **Function Name**. The function used for this metrics, distributed aggregation, value calculation and down sampling calculation
-based on the function implementation. Also, the data structure is determined by the function too, such as function Avg is for Long.
-1. **Scope Type**. Unlike inside the OAL, there are plenty of logic scope definitions, in meter system, only type is required. 
-Type values include service, instance, and endpoint, like we introduced in the Overview.
-The values of scope entity name, such as service name, are required when metrics data generated with the metrics data value.
+在后端实现里，度量系统可以对接不同的 receivers 和 fetchers，查阅 [后端设置文档](../setup/backend/backend-setup.md) 了解更多。
 
-NOTICE, the metrics must be declared in the bootstrap stage, no runtime changed.
+每个在度量系统中声明的 metrics 都需要包含以下的属性：
+1. **Metrics Name**。这是一个全局的唯一 name，并且不要和 OAL 的变量名重复。
+2. **Function Name**。这个函数用户 metrics 的分布式聚合、值的计算、以及采样率计算。并且根据函数的不同，需要不同的数据结构，比如 avg 函数，他的参数需要的是 `Long` 类型。
+3. **Scope Type**。不像 OAL 那样有大量的逻辑 scope 定义，在度量系统里，只有 type。Type 的值包括：service, instance, 和 endpoint。
 
-Meter System supports following binding functions
-- **avg**. Calculate the avg value for every entity in the same metrics name.
-- **histogram**. Aggregate the counts in the configurable buckets, buckets is configurable but must be assigned in the declaration stage.
-- **percentile**. Read [percentile in WIKI](https://en.wikipedia.org/wiki/Percentile). Unlike in the OAL, we provide
-50/75/90/95/99 in default, in the meter system function, percentile function accepts several ranks, which should be in
-the (0, 100) range.
+scope entity 的 name 值，比如像 service name，在 metrics data value 生成 metrics data 时是必须的。
+
+注意，metrics 必须在项目启动阶段就声明好，在运行时是不能修改的。
+
+度量系统支持以下的绑定函数：
+- **avg**。计算同一个 metrics 下的所有 entity 的平均值。
+- **histogram**。对可配置的 buckets 数量进行聚合，buckets 是可配置的，但是必须在声明阶段指定。
+- **percentile**. 阅读 [percentile 维基百科](https://en.wikipedia.org/wiki/Percentile)。不像 OAL，我们在度量系统里函数里默认提供了 50/75/90/95/99， percentile 接受 0 -  100 的排名。
