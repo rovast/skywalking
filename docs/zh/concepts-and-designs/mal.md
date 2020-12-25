@@ -1,25 +1,23 @@
-# Meter Analysis Language
+# MAL —— 度量分析语言(Meter Analysis Language)
 
-Meter system provides a functional analysis language called MAL(Meter Analysis Language) that lets the user analyze and 
-aggregate meter data in OAP streaming system. The result of an expression can either be ingested by agent analyzer,
-or OC/Prometheus analyzer.
+度量系统提供了一种可编程式的分析语言 —— MAL(Meter Analysis Language)。它允许用户在 OAP 流系统里分析和聚合度量数据。
+表达式的结果，可以由 agent 分析器或 OC/Prometheus 分析器读取。
 
-## Language data type
+## 语言数据类型
 
-In MAL, an expression or sub-expression can evaluate to one of two types:
+在 MAL 中，一个表达式或子表达式对以下两种数据类型进行求值：
+ - 采样族 -  一组包含一系列名称相同的度量的样本（度量）。
+ - 标量 - 简单的数值，支持 integer/long, floating/double。
 
- - Sample family -  a set of samples(metrics) containing a range of metrics whose name is identical.
- - Scalar - a simple numeric value. it supports integer/long, floating/double,
+## 采样族
 
-## Sample family
-
-A set of samples, which is as the basic unit in MAL. For example:
+一组采样，是 MAL 的基本组成单元，比如：
 
 ```
 instance_trace_count
 ```
 
-The above sample family might contains following simples which are provided by external modules, for instance, agent analyzer:
+上面的采样族可能包含以下简单采样，这些采样由外部模块（如，instance、agent 分析器）提供：
 
 ```
 instance_trace_count{region="us-west",az="az-1"} 100
@@ -27,52 +25,49 @@ instance_trace_count{region="us-east",az="az-3"} 20
 instance_trace_count{region="asia-north",az="az-1"} 33
 ```
 
-### Tag filter
+### Tag 过滤器
 
-MAL support four type operations to filter samples in a sample family:
+在一个采样族中，MAL 支持四中类型操作来过滤采样
 
- - tagEqual: Filter tags that are exactly equal to the provided string.
- - tagNotEqual: Filter tags that are not equal to the provided string.
- - tagMatch: Filter tags that regex-match the provided string.
- - tagNotMatch: Filter labels that do not regex-match the provided string.
+ - tagEqual: 根据提供的 string 来严格匹配 tag
+ - tagNotEqual: tag 和提供的 string 不相等
+ - tagMatch: 满足正则匹配的 string 和 tag
+ - tagNotMatch: 不满足正则匹配的 string 和 tags
 
-For example, this filters all instance_trace_count samples for us-west and asia-north region and az-1 az:
+举个例子，筛选所有的 instance_trace_count 采样，他们的条件是：地区是 us-west 和 asia-north，并且 az 是 az-1
 
 ```
 instance_trace_count.tagMatch("region", "us-west|asia-north").tagEqual("az", "az-1")
 ```
 
-### Binary operators
+### 二元操作符
 
-The following binary arithmetic operators are available in MAL:
+MAL 有以下二元操作：
 
- - \+ (addition)
- - \- (subtraction)
- - \* (multiplication)
- - / (division)
+ - \+ (加)
+ - \- (减)
+ - \* (乘)
+ - / (除)
 
-Binary operators are defined between scalar/scalar, sampleFamily/scalar and sampleFamily/sampleFamily value pairs.
+二元操作符定义在以下的一对值之间： scalar/scalar, sampleFamily/scalar 以及 sampleFamily/sampleFamily。
 
-Between two scalars: they evaluate to another scalar that is the result of the operator applied to both scalar operands:
 
+标量/标量：对各自标量的运算
 ```
 1 + 2
 ```
 
-Between a sample family and a scalar, the operator is applied to the value of every sample in the smaple family. For example:
-
+采样族/标量：即对每个采样族的采样都进行对应的运算
 ```
 instance_trace_count + 2
 ``` 
 
-or 
-
+或
 ```
 2 + instance_trace_count
 ``` 
 
-results in
-
+等于如下的运算，即：每个采样都和标量进行运算
 ```
 instance_trace_count{region="us-west",az="az-1"} 102 // 100 + 2
 instance_trace_count{region="us-east",az="az-3"} 22 // 20 + 2
